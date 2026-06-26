@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
-  LayoutDashboard, Settings, LogOut, Menu, X, ChevronDown, Bell, Search,
+  LayoutDashboard, LogOut, Menu, X, ChevronDown, Bell, Search,
   ChevronRight, UserCircle, ShoppingBag
 } from 'lucide-react';
 import './layout.css';
 
 const NAV = [
-  { label: 'Panel',         icon: LayoutDashboard, to: '/'       },
-  { label: 'Mis compras',   icon: ShoppingBag,     to: '/ventas' },
-  { label: 'Configuración', icon: Settings,        to: '/settings' },
+  { label: 'Panel',       icon: LayoutDashboard, to: '/'                    },
+  { label: 'Mis compras', icon: ShoppingBag,     to: '/ventas'              },
+  { label: 'Mi cuenta',   icon: UserCircle,      to: '/configuracion/cuenta' },
 ];
 
 const NavItem = ({ item, collapsed }) => {
