@@ -13,7 +13,7 @@ const NAV = [
   { label: 'Mi cuenta',   icon: UserCircle,      to: '/configuracion/cuenta' },
 ];
 
-const NavItem = ({ item, collapsed }) => {
+const NavItem = ({ item, collapsed, onNavigate }) => {
   const location = useLocation();
   const [open, setOpen] = useState(() =>
     item.children?.some(c => location.pathname === c.to)
@@ -37,6 +37,7 @@ const NavItem = ({ item, collapsed }) => {
                 key={c.to}
                 to={c.to}
                 className={`nav-link nav-child ${location.pathname === c.to ? 'active' : ''}`}
+                onClick={onNavigate}
               >
                 {c.label}
               </Link>
@@ -52,6 +53,7 @@ const NavItem = ({ item, collapsed }) => {
       to={item.to}
       className={`nav-link ${location.pathname === item.to ? 'active' : ''}`}
       title={collapsed ? item.label : undefined}
+      onClick={onNavigate}
     >
       <item.icon size={18} className="nav-icon" />
       {!collapsed && <span className="nav-label">{item.label}</span>}
@@ -89,7 +91,7 @@ export const AppLayout = ({ children }) => {
 
         <nav className="sidebar-nav">
           {NAV.map((item, i) => (
-            <NavItem key={i} item={item} collapsed={collapsed} />
+            <NavItem key={i} item={item} collapsed={collapsed} onNavigate={() => setSidebarOpen(false)} />
           ))}
         </nav>
 
