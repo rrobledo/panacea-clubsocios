@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/auth/callback",
+      "destination": "/index.html"
+    },
+    {
       "source": "/auth/:path*",
       "destination": "https://panacea-socios-backend.vercel.app/auth/:path*"
     },
