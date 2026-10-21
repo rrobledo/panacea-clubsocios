@@ -224,6 +224,17 @@ tr:last-child td { border-bottom: none; }
   animation: spin 0.7s linear infinite;
 }
 
+.skeleton {
+  background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 37%, var(--gray-100) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--radius);
+}
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
 /* ===== TOAST ===== */
 .toast-container {
   position: fixed; bottom: 20px; right: 20px;

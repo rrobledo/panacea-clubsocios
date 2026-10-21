@@ -1,0 +1,212 @@
+/* ===== HERO ===== */
+.rw-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--rw-radius);
+  background: var(--rw-gradient-hero);
+  color: #fff;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  padding: var(--rw-space-3);
+  animation: rw-fade-in var(--rw-duration) var(--rw-ease);
+}
+@media (min-width: 768px) {
+  .rw-hero { min-height: 280px; padding: var(--rw-space-4); }
+}
+.rw-hero-deco {
+  position: absolute;
+  top: -20px; right: -10px;
+  color: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+.rw-hero-content { position: relative; z-index: 1; max-width: 480px; }
+.rw-hero-title { font-size: var(--rw-h2); font-weight: 700; margin-bottom: 8px; }
+.rw-hero-balance { font-size: var(--rw-h3); margin-bottom: 8px; }
+.rw-hero-hint { font-size: var(--rw-caption); color: rgba(255, 255, 255, 0.85); margin-bottom: var(--rw-space-2); }
+.rw-hero-cta { background: #fff; color: var(--rw-primary); }
+.rw-hero-cta:hover { background: rgba(255, 255, 255, 0.9); }
+
+/* ===== CREDITS + REWARD MACHINE ROW ===== */
+.rw-credits-machine-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rw-space-3);
+  align-items: stretch;
+}
+@media (min-width: 768px) {
+  .rw-credits-machine-row { grid-template-columns: 1fr 1fr; }
+}
+.rw-credits-machine-row > * { height: 100%; }
+
+.rw-card-body { padding: var(--rw-space-3); flex: 1; }
+.rw-card-footer {
+  padding: var(--rw-space-1) var(--rw-space-3);
+  border-top: 1px solid var(--rw-gray-100);
+  font-size: 13px;
+  color: var(--rw-gray-500);
+}
+.rw-credits-card, .rw-machine-card {
+  display: flex;
+  flex-direction: column;
+  animation: rw-fade-in var(--rw-duration) var(--rw-ease);
+}
+
+.rw-credits-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--rw-gray-500);
+  text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: var(--rw-space-1);
+}
+.rw-credits-value {
+  font-size: var(--rw-h1); font-weight: 800; color: var(--rw-gray-900);
+  margin-bottom: var(--rw-space-2);
+}
+.rw-credits-progress-label {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; color: var(--rw-gray-500); margin-bottom: 6px; gap: 8px;
+}
+.rw-credits-progress-fraction { font-weight: 600; color: var(--rw-gray-700); }
+
+.rw-progress {
+  width: 100%; height: 10px; border-radius: var(--rw-radius-full);
+  background: var(--rw-gray-100); overflow: hidden;
+}
+.rw-progress-fill {
+  height: 100%; border-radius: var(--rw-radius-full);
+  background: linear-gradient(90deg, var(--rw-primary), var(--rw-secondary));
+  transition: width 900ms ease;
+}
+
+/* ===== REWARD MACHINE ===== */
+.rw-machine-card { background: var(--rw-gradient-machine); }
+.rw-machine-body { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.rw-machine-illustration {
+  color: var(--rw-accent);
+  margin-bottom: var(--rw-space-1);
+  animation: rw-float 3s ease-in-out infinite;
+}
+@media (hover: hover) {
+  .rw-machine-card:hover .rw-machine-illustration {
+    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+  }
+}
+.rw-machine-title { font-size: var(--rw-h3); font-weight: 700; margin-bottom: 4px; }
+.rw-machine-cost { font-size: var(--rw-body); color: var(--rw-gray-700); margin-bottom: var(--rw-space-2); }
+.rw-machine-play-btn { min-width: 160px; }
+.rw-machine-hint { font-size: 13px; color: var(--rw-gray-500); margin-top: var(--rw-space-1); }
+
+@media (max-width: 767px) {
+  .rw-machine-play-btn { width: 100%; }
+}
+
+.rw-machine-playing, .rw-machine-result {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: var(--rw-space-1); padding: var(--rw-space-2) 0;
+}
+.rw-machine-spin { animation: rw-spin 1.1s linear infinite; color: var(--rw-primary); }
+.rw-machine-result-title { font-size: var(--rw-h3); font-weight: 700; color: var(--rw-gray-900); }
+
+@keyframes rw-spin {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+/* ===== SECTION HEADINGS ===== */
+.rw-section-title {
+  font-size: var(--rw-h3);
+  font-weight: 700;
+  color: var(--rw-gray-900);
+  margin-bottom: var(--rw-space-2);
+}
+
+/* ===== CAROUSEL (touch-swipeable, CSS scroll-snap, no JS library) ===== */
+.rw-carousel { width: 100%; }
+.rw-carousel-track {
+  display: flex;
+  gap: var(--rw-space-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.rw-carousel-track > * {
+  flex: 0 0 82%;
+  scroll-snap-align: start;
+}
+.rw-carousel:focus-visible { outline: 2px solid var(--rw-primary); outline-offset: 2px; }
+
+/* ===== ACTIVE COUPONS ===== */
+.rw-coupons-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--rw-space-2);
+}
+.rw-coupon-card { animation: rw-fade-in var(--rw-duration) var(--rw-ease); }
+.rw-coupon-body { display: flex; flex-direction: column; gap: 6px; }
+.rw-coupon-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.rw-coupon-title { font-size: var(--rw-h3); font-weight: 700; color: var(--rw-gray-900); }
+.rw-coupon-store { font-size: 13px; color: var(--rw-gray-500); }
+.rw-coupon-expiry { font-size: 13px; color: var(--rw-gray-500); }
+.rw-coupon-remaining { font-size: 13px; font-weight: 600; color: var(--rw-secondary); margin-bottom: 6px; }
+.rw-coupon-qr-btn { margin-top: 8px; }
+
+.rw-qr-modal { display: flex; flex-direction: column; align-items: center; gap: var(--rw-space-2); text-align: center; }
+.rw-qr-image { width: 200px; height: 200px; object-fit: contain; border-radius: var(--rw-radius-sm); }
+.rw-qr-placeholder {
+  width: 200px; height: 200px; display: flex; align-items: center; justify-content: center;
+  background: var(--rw-gray-100); border-radius: var(--rw-radius-sm);
+  font-family: monospace; font-size: 12px; color: var(--rw-gray-500);
+  padding: var(--rw-space-1); word-break: break-all;
+}
+.rw-qr-detail { font-size: 14px; color: var(--rw-gray-700); }
+
+/* ===== FEATURED PROMOTIONS ===== */
+.rw-promotions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rw-space-2);
+}
+@media (min-width: 1025px) {
+  .rw-promotions-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.rw-promotion-card {
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: rw-fade-in var(--rw-duration) var(--rw-ease);
+}
+.rw-promotion-image { width: 100%; height: 140px; object-fit: cover; }
+.rw-promotion-body { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.rw-promotion-title { font-size: var(--rw-h3); font-weight: 700; color: var(--rw-gray-900); }
+.rw-promotion-description {
+  font-size: 14px; color: var(--rw-gray-500); flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.rw-promotion-cta { margin-top: 8px; align-self: flex-start; }
+
+.rw-promotion-modal { display: flex; flex-direction: column; gap: var(--rw-space-2); }
+.rw-promotion-modal-image { width: 100%; border-radius: var(--rw-radius-sm); object-fit: cover; }
+
+/* ===== RECENT ACTIVITY / TIMELINE ===== */
+.rw-timeline-group { margin-bottom: var(--rw-space-2); }
+.rw-timeline-group:last-child { margin-bottom: 0; }
+.rw-timeline-day {
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--rw-gray-500); margin-bottom: 10px;
+}
+.rw-timeline-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--rw-gray-100);
+}
+.rw-timeline-item:last-child { border-bottom: none; }
+.rw-timeline-icon {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: var(--rw-gray-100); color: var(--rw-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+.rw-timeline-content { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rw-timeline-title { font-size: 14px; font-weight: 600; color: var(--rw-gray-900); }
+.rw-timeline-detail { font-size: 13px; color: var(--rw-gray-500); }
+.rw-timeline-credits { font-size: 14px; font-weight: 700; white-space: nowrap; }
+.rw-timeline-credits.rw-positive { color: var(--rw-secondary); }
+.rw-timeline-credits.rw-negative { color: var(--rw-danger); }

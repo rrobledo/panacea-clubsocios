@@ -4,7 +4,7 @@ import { ToastProvider } from './context/ToastContext';
 import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './components/auth/LoginPage';
 import { OAuthCallback } from './components/auth/OAuthCallback';
-import { DashboardPage } from './pages/DashboardPage';
+import { RewardsHomePage } from './pages/RewardsHomePage';
 import { ChartsPage } from './pages/ChartsPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { MasterDetailPage, ComplexFormPage } from './pages/FormPages';
@@ -44,11 +44,15 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/auth/callback" element={<OAuthCallback />} />
+            <Route path="/" element={
+              <PrivateRoute>
+                <RewardsHomePage />
+              </PrivateRoute>
+            } />
             <Route path="/*" element={
               <PrivateRoute>
                 <AppLayout>
                   <Routes>
-                    <Route path="/"                         element={<DashboardPage />} />
                     <Route path="/charts"                   element={<ChartsPage />} />
                     <Route path="/products"                 element={<ProductsPage />} />
                     <Route path="/orders"                   element={<Placeholder title="Pedidos" />} />

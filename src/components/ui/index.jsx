@@ -16,7 +16,7 @@ export const Modal = ({ open, onClose, title, children, footer, size = '', noPad
       <div className={`modal modal-${size}`} role="dialog" aria-modal>
         <div className="modal-header">
           <h3 className="modal-title">{title}</h3>
-          <button className="btn btn-ghost btn-icon" onClick={onClose}><X size={18} /></button>
+          <button className="btn btn-ghost btn-icon" onClick={onClose} aria-label="Cerrar"><X size={18} /></button>
         </div>
         <div className={noPad ? '' : 'modal-body'}>{children}</div>
         {footer && <div className="modal-footer">{footer}</div>}
@@ -78,6 +78,11 @@ export const EmptyState = ({ icon: Icon, title, description, action }) => (
   </div>
 );
 
+// ── Skeleton ──────────────────────────────────────────────────────────────
+export const Skeleton = ({ width = '100%', height = 16, radius, style }) => (
+  <div className="skeleton" style={{ width, height, borderRadius: radius, ...style }} />
+);
+
 // ── Error State ────────────────────────────────────────────────────────────
 export const ErrorState = ({ message, onRetry }) => (
   <div style={{ textAlign: 'center', padding: '32px 24px' }}>
@@ -131,6 +136,7 @@ const STATUS_MAP = {
   active: 'success', inactive: 'gray', pending: 'warning',
   cancelled: 'danger', completed: 'primary', draft: 'gray',
   published: 'success', archived: 'gray',
+  expired: 'gray', used: 'primary',
 };
 export const StatusBadge = ({ status }) => (
   <span className={`badge badge-${STATUS_MAP[status?.toLowerCase()] || 'gray'}`}>

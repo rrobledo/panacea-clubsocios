@@ -1,0 +1,117 @@
+/* ===== REWARDS HOME — SCOPED DESIGN TOKENS =====
+   Scoped to .rewards-theme so the rest of the app (Ventas, Cuenta, forms,
+   tables, existing Modal/Badge/Tabs) keeps its current enterprise tokens
+   (see src/index.css) untouched. Components under src/components/rewards/
+   must reference --rw-* variables only, never the app's global --primary/
+   --radius/etc. */
+
+.rewards-theme {
+  --rw-primary: #2563EB;
+  --rw-primary-dark: #1d4ed8;
+  --rw-secondary: #22C55E;
+  --rw-accent: #F59E0B;
+  --rw-danger: #EF4444;
+  --rw-bg: #F8FAFC;
+  --rw-card: #FFFFFF;
+
+  --rw-gray-100: #F1F5F9;
+  --rw-gray-200: #E2E8F0;
+  --rw-gray-400: #94A3B8;
+  --rw-gray-500: #64748B;
+  --rw-gray-700: #334155;
+  --rw-gray-900: #0F172A;
+
+  --rw-radius: 20px;
+  --rw-radius-sm: 12px;
+  --rw-radius-full: 999px;
+
+  --rw-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --rw-shadow-md: 0 8px 20px rgba(15, 23, 42, 0.08);
+  --rw-shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.12);
+
+  --rw-duration: 250ms;
+  --rw-ease: ease;
+
+  /* 8-point spacing scale */
+  --rw-space-1: 8px;
+  --rw-space-2: 16px;
+  --rw-space-3: 24px;
+  --rw-space-4: 32px;
+  --rw-space-5: 40px;
+  --rw-space-6: 48px;
+
+  --rw-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Desktop typography */
+  --rw-h1: 36px;
+  --rw-h2: 28px;
+  --rw-h3: 22px;
+  --rw-body: 16px;
+  --rw-caption: 14px;
+
+  --rw-gradient-hero: linear-gradient(135deg, var(--rw-primary) 0%, #1e40af 55%, #1d3f91 100%);
+  --rw-gradient-machine: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(245, 158, 11, 0.10) 100%);
+
+  background: var(--rw-bg);
+  color: var(--rw-gray-900);
+  font-family: var(--rw-font);
+  min-height: 100vh;
+}
+
+@media (max-width: 767px) {
+  .rewards-theme {
+    --rw-h1: 28px;
+    --rw-h2: 22px;
+    --rw-body: 16px;
+  }
+}
+
+.rewards-theme * { box-sizing: border-box; }
+
+.rewards-theme .rw-card {
+  background: var(--rw-card);
+  border-radius: var(--rw-radius);
+  box-shadow: var(--rw-shadow);
+  border: 1px solid var(--rw-gray-100);
+  transition: transform var(--rw-duration) var(--rw-ease), box-shadow var(--rw-duration) var(--rw-ease);
+}
+
+@media (hover: hover) {
+  .rewards-theme .rw-card--hoverable:hover {
+    transform: scale(1.02);
+    box-shadow: var(--rw-shadow-md);
+  }
+}
+
+.rewards-theme .rw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: var(--rw-radius-sm);
+  border: none;
+  font-family: var(--rw-font);
+  font-size: var(--rw-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--rw-duration) var(--rw-ease), box-shadow var(--rw-duration) var(--rw-ease), background var(--rw-duration) var(--rw-ease);
+}
+.rewards-theme .rw-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.rewards-theme .rw-btn:focus-visible { outline: 2px solid var(--rw-primary); outline-offset: 2px; }
+.rewards-theme .rw-btn-primary { background: var(--rw-primary); color: #fff; box-shadow: var(--rw-shadow); }
+.rewards-theme .rw-btn-primary:hover:not(:disabled) { background: var(--rw-primary-dark); box-shadow: var(--rw-shadow-md); }
+.rewards-theme .rw-btn-block { width: 100%; }
+
+@keyframes rw-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes rw-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes rw-count-fill {
+  from { width: 0; }
+}
