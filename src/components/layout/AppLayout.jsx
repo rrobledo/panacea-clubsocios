@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard, LogOut, Menu, X, ChevronDown, Bell, Search,
-  ChevronRight, UserCircle, ShoppingBag
+  ChevronRight, UserCircle, ShoppingBag, Settings2
 } from 'lucide-react';
 import './layout.css';
 
@@ -12,6 +12,17 @@ const NAV = [
   { label: 'Mis compras', icon: ShoppingBag,     to: '/ventas'              },
   { label: 'Mi cuenta',   icon: UserCircle,      to: '/configuracion/cuenta' },
 ];
+
+// Visible solo para administradores (user.es_admin vía GET /socios/me).
+const MAESTRO_NAV = {
+  label: 'Maestro', icon: Settings2,
+  children: [
+    { label: 'Beneficios',          to: '/maestro/beneficios'    },
+    { label: 'Tabla de conversión', to: '/maestro/conversion'    },
+    { label: 'Configuración',       to: '/maestro/configuracion' },
+    { label: 'Ajustes de puntos',   to: '/maestro/ajustes'       },
+  ],
+};
 
 const NavItem = ({ item, collapsed, onNavigate }) => {
   const location = useLocation();
@@ -62,7 +73,8 @@ const NavItem = ({ item, collapsed, onNavigate }) => {
 };
 
 export const AppLayout = ({ children }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
+  const navItems = isAdmin ? [...NAV, MAESTRO_NAV] : NAV;
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed]     = useState(false);
@@ -90,7 +102,7 @@ export const AppLayout = ({ children }) => {
         </div>
 
         <nav className="sidebar-nav">
-          {NAV.map((item, i) => (
+          {navItems.map((item, i) => (
             <NavItem key={i} item={item} collapsed={collapsed} onNavigate={() => setSidebarOpen(false)} />
           ))}
         </nav>

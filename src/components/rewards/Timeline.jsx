@@ -1,4 +1,4 @@
-import { ShoppingBag, Gift } from 'lucide-react';
+import { ShoppingBag, Gift, Ticket, Undo2, Hourglass, Wrench, ArrowLeftRight } from 'lucide-react';
 import { isToday, isYesterday, format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -11,13 +11,21 @@ const groupLabel = (dateStr) => {
   return format(d, "d 'de' MMMM", { locale: es });
 };
 
-const fmtCurrency = (v) =>
-  new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(v);
+// Tipos de movimiento del ledger de puntos
+const TYPES = {
+  ACUMULACION:    { icon: ShoppingBag,    title: 'Compra' },
+  CANJE:          { icon: Ticket,         title: 'Canje de beneficio' },
+  JUEGO:          { icon: Gift,           title: 'Máquina de Recompensas' },
+  REVERSO_COMPRA: { icon: Undo2,          title: 'Compra anulada' },
+  EXPIRACION:     { icon: Hourglass,      title: 'Puntos vencidos' },
+  AJUSTE:         { icon: Wrench,         title: 'Ajuste' },
+  MIGRACION:      { icon: ArrowLeftRight, title: 'Saldo inicial' },
+};
 
 export const Timeline = ({ entries }) => {
   const groups = [];
   entries.forEach((entry) => {
-    const label = groupLabel(entry.date);
+    const label = groupLabel(entry.fecha);
     let group = groups.find(g => g.label === label);
     if (!group) {
       group = { label, items: [] };
@@ -31,31 +39,22 @@ export const Timeline = ({ entries }) => {
       {groups.map(({ label, items }) => (
         <div key={label} className="rw-timeline-group">
           <div className="rw-timeline-day">{label}</div>
-          {items.map((entry, i) => (
-            <div key={i} className="rw-timeline-item">
-              <div className="rw-timeline-icon">
-                {entry.type === 'PURCHASE' ? <ShoppingBag size={16} /> : <Gift size={16} />}
+          {items.map((entry, i) => {
+            const { icon: Icon, title } = TYPES[entry.tipo] ?? { icon: Gift, title: 'Movimiento' };
+            const pts = Number(entry.puntos) || 0;
+            return (
+              <div key={entry.id ?? i} className="rw-timeline-item">
+                <div className="rw-timeline-icon"><Icon size={16} /></div>
+                <div className="rw-timeline-content">
+                  <span className="rw-timeline-title">{title}</span>
+                  {entry.descripcion && <span className="rw-timeline-detail">{entry.descripcion}</span>}
+                </div>
+                <div className={`rw-timeline-credits ${pts >= 0 ? 'rw-positive' : 'rw-negative'}`}>
+                  {pts >= 0 ? '+' : ''}{pts} pts
+                </div>
               </div>
-              <div className="rw-timeline-content">
-                {entry.type === 'PURCHASE' ? (
-                  <>
-                    <span className="rw-timeline-title">Compra</span>
-                    {entry.amount !== undefined && (
-                      <span className="rw-timeline-detail">{fmtCurrency(entry.amount)}</span>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <span className="rw-timeline-title">Jugó la Máquina de Recompensas</span>
-                    {entry.reward && <span className="rw-timeline-detail">Ganó: {entry.reward}</span>}
-                  </>
-                )}
-              </div>
-              <div className={`rw-timeline-credits ${entry.credits >= 0 ? 'rw-positive' : 'rw-negative'}`}>
-                {entry.credits >= 0 ? '+' : ''}{entry.credits} Créditos
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ))}
     </div>

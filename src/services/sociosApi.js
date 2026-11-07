@@ -55,5 +55,11 @@ export const buscarPorDni = (dni) =>
 export const buscarPorNombre = (nombre) =>
   client.get('/socios/', { params: { name: nombre.normalize('NFD').replace(/[̀-ͯ]/g, '') } });
 
+// data puede incluir `cupon_codigo` (string, un solo cupón por compra).
+// Respuesta: { venta, descuento, puntos_generados } · 409 CUPON_INVALIDO / UN_CUPON_POR_COMPRA
 export const registrarVenta = (data) =>
   client.post('/ventas/', data);
+
+// Valida un cupón sin consumirlo. Respuesta: { valido, descuento, motivo? }
+export const validateCoupon = (codigo, socioId, monto) =>
+  client.get(`/canjes/${encodeURIComponent(codigo)}`, { params: { socio_id: socioId, monto } });

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { getMe } from '../services/sociosApi';
 
 const AuthContext = createContext(null);
 
@@ -71,6 +72,23 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(auth));
   }, []);
 
+  // Rol de administrador: se obtiene de GET /socios/me (`es_admin`) cada vez que cambia el token.
+  // Solo controla qué se muestra en la UI; el backend valida el rol en /admin/*.
+  const token = user?.access_token ?? null;
+  const [role, setRole] = useState({ token: null, isAdmin: false });
+
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    getMe()
+      .then(res => { if (!cancelled) setRole({ token, isAdmin: res.data?.es_admin === true }); })
+      .catch(() => { if (!cancelled) setRole({ token, isAdmin: false }); });
+    return () => { cancelled = true; };
+  }, [token]);
+
+  const roleLoading = !!token && role.token !== token;
+  const isAdmin = !!token && role.token === token && role.isAdmin;
+
   const logout = useCallback(() => {
     setUser(null);
     setAuthError(null);
@@ -81,6 +99,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{
       user, loading, authError,
       isAuthenticated: !!user,
+      isAdmin, roleLoading,
       loginWithGoogle, loginWithCredentials, handleOAuthCallback, logout,
     }}>
       {children}

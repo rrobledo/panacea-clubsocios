@@ -12,6 +12,10 @@ import { PrintableReportPage } from './pages/PrintableReportPage';
 import { CuentaPage } from './pages/CuentaPage';
 import { VentasPage } from './pages/VentasPage';
 import { VentaDetailPage } from './pages/VentaDetailPage';
+import { BeneficiosPage } from './pages/maestro/BeneficiosPage';
+import { ConversionPage } from './pages/maestro/ConversionPage';
+import { ConfiguracionPage } from './pages/maestro/ConfiguracionPage';
+import { AjustesPage } from './pages/maestro/AjustesPage';
 import { PageLoader } from './components/ui';
 import './index.css';
 
@@ -20,6 +24,14 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
   if (loading) return <PageLoader />;
   if (!isAuthenticated) return <Navigate to={`/login?redirect=${location.pathname}`} replace />;
+  return children;
+};
+
+// Solo administradores. Ocultar la UI no es seguridad: el backend valida el rol en /admin/*.
+const AdminRoute = ({ children }) => {
+  const { isAdmin, roleLoading } = useAuth();
+  if (roleLoading) return <PageLoader />;
+  if (!isAdmin) return <Navigate to="/" replace />;
   return children;
 };
 
@@ -67,6 +79,10 @@ function App() {
                     <Route path="/ventas"                    element={<VentasPage />} />
                     <Route path="/ventas/:id"               element={<VentaDetailPage />} />
                     <Route path="/configuracion/cuenta"     element={<CuentaPage />} />
+                    <Route path="/maestro/beneficios"       element={<AdminRoute><BeneficiosPage /></AdminRoute>} />
+                    <Route path="/maestro/conversion"       element={<AdminRoute><ConversionPage /></AdminRoute>} />
+                    <Route path="/maestro/configuracion"    element={<AdminRoute><ConfiguracionPage /></AdminRoute>} />
+                    <Route path="/maestro/ajustes"          element={<AdminRoute><AjustesPage /></AdminRoute>} />
                     <Route path="*"                         element={<Placeholder title="Página no encontrada" />} />
                   </Routes>
                 </AppLayout>

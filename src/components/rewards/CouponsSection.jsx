@@ -15,8 +15,12 @@ const QrModal = ({ coupon, onClose }) => {
           <img src={coupon.qrCode} alt={`Código QR para ${coupon.title}`} className="rw-qr-image" />
         ) : (
           <div className="rw-qr-placeholder" role="img" aria-label={`Código QR para ${coupon.title}`}>
-            {coupon.qrCode || coupon.id}
+            {coupon.qrCode || coupon.codigo || coupon.id}
           </div>
+        )}
+        {coupon.codigo && <p className="rw-qr-code">{coupon.codigo}</p>}
+        {coupon.porcentaje_descuento != null && (
+          <p className="rw-qr-detail">{coupon.porcentaje_descuento}% de descuento · un cupón por compra</p>
         )}
         {coupon.store && <p className="rw-qr-detail">{coupon.store}</p>}
       </div>
@@ -41,7 +45,7 @@ export const CouponsSection = ({ coupons, loading, error, onRetry, onPlay }) => 
         <EmptyState
           icon={Ticket}
           title="Todavía no tenés cupones"
-          description="¡Jugá en la Máquina de Recompensas para ganar uno!"
+          description="Canjeá tus puntos por un beneficio o jugá en la Máquina de Recompensas."
           action={<button type="button" className="rw-btn rw-btn-primary" onClick={onPlay}>Jugar</button>}
         />
       ) : (

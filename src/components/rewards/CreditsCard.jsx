@@ -36,9 +36,15 @@ const useCountUp = (target, active) => {
   return value;
 };
 
+const fmtShortDate = (v) => {
+  const d = v?.length === 10 ? new Date(`${v}T12:00:00`) : new Date(v);
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('es-AR', { day: '2-digit', month: 'long' });
+};
+
 export const CreditsCard = ({ credits, loading, error, onRetry }) => {
-  const current = credits?.current ?? 0;
-  const nextReward = credits?.nextReward ?? 0;
+  const current = credits?.saldo ?? 0;
+  const nextReward = credits?.proxima_recompensa ?? 0;
+  const porVencer = credits?.por_vencer;
   const animatedValue = useCountUp(current, !loading && !error);
 
   return (
@@ -46,7 +52,7 @@ export const CreditsCard = ({ credits, loading, error, onRetry }) => {
       <div className="rw-card-body">
         <div className="rw-credits-label">
           <Coins size={18} color="var(--rw-accent)" />
-          <span>Créditos</span>
+          <span>Puntos</span>
         </div>
 
         {loading ? (
@@ -55,20 +61,33 @@ export const CreditsCard = ({ credits, loading, error, onRetry }) => {
             <Skeleton width="100%" height={10} style={{ marginBottom: 8 }} />
           </>
         ) : error ? (
-          <ErrorState message="No pudimos cargar tus créditos." onRetry={onRetry} />
+          <ErrorState message="No pudimos cargar tus puntos." onRetry={onRetry} />
         ) : (
           <>
             <div className="rw-credits-value">{animatedValue}</div>
-            <div className="rw-credits-progress-label">
-              Progreso hacia la próxima recompensa
-              <span className="rw-credits-progress-fraction">{current} / {nextReward} Créditos</span>
-            </div>
-            <ProgressBar value={current} max={nextReward} />
+            {nextReward > 0 && (
+              <>
+                <div className="rw-credits-progress-label">
+                  Progreso hacia el próximo beneficio
+                  <span className="rw-credits-progress-fraction">{current} / {nextReward} puntos</span>
+                </div>
+                <ProgressBar value={current} max={nextReward} />
+              </>
+            )}
+            {porVencer?.puntos > 0 && (
+              <p className="rw-credits-expiring">
+                {porVencer.puntos} puntos vencen el {fmtShortDate(porVencer.fecha)}
+              </p>
+            )}
           </>
         )}
       </div>
-      {!loading && !error && (
-        <div className="rw-card-footer">Próxima recompensa a los {nextReward} créditos</div>
+      {!loading && !error && nextReward > 0 && (
+        <div className="rw-card-footer">
+          {current >= nextReward
+            ? '¡Ya podés canjear un beneficio!'
+            : `Te faltan ${nextReward - current} puntos para tu próximo beneficio`}
+        </div>
       )}
     </div>
   );

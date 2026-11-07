@@ -210,3 +210,50 @@
 .rw-timeline-credits { font-size: 14px; font-weight: 700; white-space: nowrap; }
 .rw-timeline-credits.rw-positive { color: var(--rw-secondary); }
 .rw-timeline-credits.rw-negative { color: var(--rw-danger); }
+
+/* ===== POINTS (loyalty system) ===== */
+.rw-credits-expiring {
+  margin-top: var(--rw-space-1);
+  font-size: 13px; font-weight: 600; color: var(--rw-accent);
+}
+.rw-coupon-discount { font-size: 14px; font-weight: 700; color: var(--rw-primary); }
+.rw-qr-code { font-family: monospace; font-size: 18px; font-weight: 700; letter-spacing: 0.08em; color: var(--rw-gray-900); }
+
+/* ===== BENEFITS CATALOG ===== */
+.rw-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rw-space-2);
+}
+@media (min-width: 1025px) {
+  .rw-benefits-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.rw-benefit-card {
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: rw-fade-in var(--rw-duration) var(--rw-ease);
+}
+.rw-benefit-image { width: 100%; height: 120px; object-fit: cover; }
+.rw-benefit-body { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.rw-benefit-discount { font-size: var(--rw-h2); font-weight: 800; color: var(--rw-primary); line-height: 1; }
+.rw-benefit-title { font-size: var(--rw-h3); font-weight: 700; color: var(--rw-gray-900); }
+.rw-benefit-description {
+  font-size: 14px; color: var(--rw-gray-500); flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.rw-benefit-meta { font-size: 13px; color: var(--rw-gray-500); }
+.rw-benefit-footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin-top: 8px;
+}
+.rw-benefit-cost { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--rw-gray-900); }
+.rw-benefit-hint { font-size: 12px; color: var(--rw-gray-500); }
+
+.rw-redeem-modal { display: flex; flex-direction: column; gap: var(--rw-space-2); }
+.rw-redeem-summary {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--rw-space-2); border-radius: var(--rw-radius-sm); background: var(--rw-gray-100);
+}
+.rw-redeem-note { font-size: 13px; color: var(--rw-gray-500); }
+.rw-redeem-actions { display: flex; gap: var(--rw-space-1); justify-content: flex-end; }
+.rewards-theme .rw-btn-ghost { background: transparent; color: var(--rw-gray-700); }
+.rewards-theme .rw-btn-ghost:hover:not(:disabled) { background: var(--rw-gray-100); }

@@ -21,7 +21,7 @@ export const RewardMachineCard = ({ cost, enabled, currentCredits, loading, erro
           <ErrorState message="No pudimos cargar la Máquina de Recompensas." onRetry={onRetry} />
         ) : (
           <>
-            <p className="rw-machine-cost">Jugá por solo <strong>{cost} Créditos</strong></p>
+            <p className="rw-machine-cost">Jugá por solo <strong>{cost} puntos</strong></p>
             <button
               type="button"
               className="rw-btn rw-btn-primary rw-machine-play-btn"
@@ -34,7 +34,7 @@ export const RewardMachineCard = ({ cost, enabled, currentCredits, loading, erro
               <p className="rw-machine-hint">La Máquina de Recompensas no está disponible en este momento.</p>
             )}
             {enabled && insufficientCredits && (
-              <p className="rw-machine-hint">Necesitás {cost - currentCredits} créditos más para jugar.</p>
+              <p className="rw-machine-hint">Necesitás {cost - currentCredits} puntos más para jugar.</p>
             )}
           </>
         )}

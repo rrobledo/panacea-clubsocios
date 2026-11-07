@@ -1,7 +1,7 @@
 import { Sparkles } from 'lucide-react';
 import { Skeleton } from '../ui';
 
-export const Hero = ({ name, credits, loading, onPlay }) => (
+export const Hero = ({ name, points, loading, onPlay }) => (
   <section id="rw-home" className="rw-hero" aria-labelledby="rw-hero-heading">
     <Sparkles className="rw-hero-deco" size={120} aria-hidden="true" />
     <div className="rw-hero-content">
@@ -13,10 +13,10 @@ export const Hero = ({ name, credits, loading, onPlay }) => (
       ) : (
         <>
           <h1 id="rw-hero-heading" className="rw-hero-title">¡Hola de nuevo, {name}!</h1>
-          <p className="rw-hero-balance">Tenés <strong>{credits} Créditos</strong></p>
+          <p className="rw-hero-balance">Tenés <strong>{points} puntos</strong></p>
         </>
       )}
-      <p className="rw-hero-hint">Ganá más créditos comprando en nuestros locales.</p>
+      <p className="rw-hero-hint">Sumá puntos con cada compra y canjealos por descuentos.</p>
       <button type="button" className="rw-btn rw-btn-primary rw-hero-cta" onClick={onPlay}>
         Jugar ahora
       </button>

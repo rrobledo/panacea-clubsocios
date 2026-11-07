@@ -8,7 +8,8 @@ import { RewardMachineCard, PlayMachineModal } from '../components/rewards/Rewar
 import { CouponsSection } from '../components/rewards/CouponsSection';
 import { PromotionsSection } from '../components/rewards/PromotionsSection';
 import { ActivitySection } from '../components/rewards/ActivitySection';
-import { getCredits, getRewardMachine, getCoupons, getPromotions, getActivity } from '../services/rewardsApi';
+import { BenefitsSection } from '../components/rewards/BenefitsSection';
+import { getCredits, getRewardMachine, getCoupons, getPromotions, getActivity, getBenefits } from '../services/rewardsApi';
 import '../components/rewards/rewards-theme.css';
 import '../components/rewards/rewards-page.css';
 
@@ -36,7 +37,13 @@ export const RewardsHomePage = () => {
   const [promotionsLoading, setPromotionsLoading] = useState(true);
   const [promotionsError, setPromotionsError] = useState(false);
 
+  const [benefits, setBenefits] = useState([]);
+  const [benefitsLoading, setBenefitsLoading] = useState(true);
+  const [benefitsError, setBenefitsError] = useState(false);
+
   const [playModalOpen, setPlayModalOpen] = useState(false);
+
+  const balance = credits?.saldo ?? 0;
 
   // Each section's data is fetched by a plain fetchX (safe to call from a mount
   // effect: it only touches state inside the async .then/.catch/.finally, never
@@ -82,7 +89,16 @@ export const RewardsHomePage = () => {
   }, []);
   const retryActivity = () => { setActivityLoading(true); setActivityError(false); fetchActivity(); };
 
+  const fetchBenefits = useCallback(() => {
+    getBenefits()
+      .then(res => setBenefits(Array.isArray(res.data) ? res.data : res.data?.items ?? []))
+      .catch(() => setBenefitsError(true))
+      .finally(() => setBenefitsLoading(false));
+  }, []);
+  const retryBenefits = () => { setBenefitsLoading(true); setBenefitsError(false); fetchBenefits(); };
+
   useEffect(() => { fetchCredits(); }, [fetchCredits]);
+  useEffect(() => { fetchBenefits(); }, [fetchBenefits]);
   useEffect(() => { fetchRewardMachine(); }, [fetchRewardMachine]);
   useEffect(() => { fetchCoupons(); }, [fetchCoupons]);
   useEffect(() => { fetchPromotions(); }, [fetchPromotions]);
@@ -94,29 +110,27 @@ export const RewardsHomePage = () => {
       toast.warning('La Máquina de Recompensas no está disponible en este momento.');
       return;
     }
-    if ((credits?.current ?? 0) < (rewardMachine?.cost ?? Infinity)) {
-      toast.warning('No tenés créditos suficientes para jugar.');
+    if (balance < (rewardMachine?.cost ?? Infinity)) {
+      toast.warning('No tenés puntos suficientes para jugar.');
       return;
     }
     setPlayModalOpen(true);
   };
 
-  const handlePlayResolved = (data) => {
-    if (data?.credits) setCredits(data.credits);
-    if (data?.coupon) {
-      setCoupons(prev => [data.coupon, ...prev]);
-      setActivity(prev => [
-        { type: 'PLAY', credits: -(rewardMachine?.cost ?? 0), reward: data.coupon.title, date: new Date().toISOString() },
-        ...prev,
-      ]);
-    }
+  // Tras jugar o canjear, el ledger del backend es la fuente de verdad:
+  // se refrescan saldo, cupones, actividad y beneficios (canjeable/stock).
+  const refreshAfterPointsChange = () => {
+    fetchCredits();
+    fetchCoupons();
+    fetchActivity();
+    fetchBenefits();
   };
 
   return (
     <RewardsShell onPlay={openPlayModal}>
       <Hero
         name={user?.email?.split('@')[0] || 'Socio'}
-        credits={credits?.current ?? 0}
+        points={balance}
         loading={creditsLoading}
         onPlay={openPlayModal}
       />
@@ -131,13 +145,22 @@ export const RewardsHomePage = () => {
         <RewardMachineCard
           cost={rewardMachine?.cost ?? 0}
           enabled={rewardMachine?.enabled ?? false}
-          currentCredits={credits?.current ?? 0}
+          currentCredits={balance}
           loading={machineLoading}
           error={machineError}
           onRetry={retryRewardMachine}
           onPlay={openPlayModal}
         />
       </div>
+
+      <BenefitsSection
+        benefits={benefits}
+        balance={balance}
+        loading={benefitsLoading || creditsLoading}
+        error={benefitsError}
+        onRetry={retryBenefits}
+        onRedeemed={refreshAfterPointsChange}
+      />
 
       <CouponsSection
         coupons={coupons}
@@ -164,7 +187,7 @@ export const RewardsHomePage = () => {
       {playModalOpen && (
         <PlayMachineModal
           onClose={() => setPlayModalOpen(false)}
-          onResolved={handlePlayResolved}
+          onResolved={refreshAfterPointsChange}
         />
       )}
     </RewardsShell>
